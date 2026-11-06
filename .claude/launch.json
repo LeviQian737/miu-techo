@@ -1,0 +1,41 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "miu-cat-live",
+      "runtimeExecutable": "/opt/anaconda3/bin/python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8417",
+        "--directory",
+        "/Users/milkteadad/Desktop/codexProjects/miuApp/xxd017_examples/live"
+      ],
+      "port": 8417
+    },
+    {
+      "name": "miu-design",
+      "runtimeExecutable": "/opt/anaconda3/bin/python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8418",
+        "--directory",
+        "/Users/milkteadad/Desktop/codexProjects/miuApp/design"
+      ],
+      "port": 8418
+    },
+    {
+      "name": "miu-app",
+      "runtimeExecutable": "/opt/anaconda3/bin/python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8420",
+        "--directory",
+        "/Users/milkteadad/Desktop/codexProjects/miuApp/app"
+      ],
+      "port": 8420
+    }
+  ]
+}

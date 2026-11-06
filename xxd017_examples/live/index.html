@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Miu Cat Live</title>
+<script src="miu-cat.js"></script>
+<style>
+  :root { --paper: #FFFDF5; --ink: #1E1E1B; --caramel: #F1A63E; --pink: #F59AB6; }
+  body { margin: 0; background: var(--paper); color: var(--ink);
+         font-family: "Chalkboard SE", "Comic Sans MS", system-ui, sans-serif; }
+  main { max-width: 900px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1 { font-size: 40px; margin: 0 0 4px; transform: rotate(-2deg); }
+  p { margin: 0 0 24px; }
+  .row { display: flex; flex-wrap: wrap; gap: 20px; }
+  .card { flex: 1 1 260px; border: 3px solid var(--ink); border-radius: 22px; padding: 20px;
+          display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .card.sofa { background: var(--caramel); }
+  .card.blanket { background: var(--pink); }
+  .card small { font-size: 14px; }
+  miu-cat { width: 150px; }
+  img { width: 150px; height: auto; }
+  code { background: rgba(0,0,0,.06); padding: 1px 6px; border-radius: 6px; font-size: 13px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>BIG YAWN!</h1>
+  <p>每隔几秒自动打一个哈欠；点一下猫，它会马上抖一下耳朵，并接着打一个哈欠。</p>
+  <div class="row">
+    <div class="card sofa">
+      <miu-cat></miu-cat>
+      <small>Web component · 可点击 · <code>&lt;miu-cat&gt;</code></small>
+    </div>
+    <div class="card blanket">
+      <miu-cat></miu-cat>
+      <small>透明背景，放在任何颜色上</small>
+    </div>
+    <div class="card">
+      <img src="miu-cat.svg" alt="Gray cat yawning">
+      <small>纯 <code>&lt;img src="miu-cat.svg"&gt;</code> · 自动循环，不可点击</small>
+    </div>
+  </div>
+</main>
+</body>
+</html>

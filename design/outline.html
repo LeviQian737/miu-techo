@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Miu 轮廓</title>
+<style>
+  :root{--paper:#F7F8F5;--ink:#2B2B33;--soft:#6B6E78}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:"PingFang SC",system-ui,sans-serif}
+  main{max-width:900px;margin:0 auto;padding:28px 16px}
+  h1{font-size:20px;margin:0 0 4px}
+  p{margin:0 0 20px;color:var(--soft);font-size:14px}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  figure{margin:0;border:1.5px solid var(--ink);border-radius:12px;overflow:hidden;background:#fff}
+  figure .pic{aspect-ratio:375/460;display:grid;place-items:center;background:#111}
+  figure img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
+  figure svg{width:100%;height:100%}
+  figcaption{padding:8px 12px;font-size:14px;border-top:1.5px solid var(--ink)}
+  @media (max-width:600px){.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+  <h1>先对轮廓</h1>
+  <p>右边是按截图比例画的空白轮廓：灰色是猫本身（20 × 32 格），外面一圈白色只是描边，网格一格 = 一个像素。形状对了再上 Miu 的花色。</p>
+  <div class="row">
+    <figure><div class="pic"><img src="ref/reference.png" alt="参考截图"></div><figcaption>你的参考图</figcaption></figure>
+    <figure><div class="pic" id="out"></div><figcaption>我画的轮廓</figcaption></figure>
+  </div>
+</main>
+<script>
+// '#' = the cat itself (the white edge is only the outline drawn around it), 'w' = whisker.
+// 20 wide x 32 tall: small corner ears, a waist under the whiskers, a notch between the feet,
+// and a hooked tail one pixel off the right side.
+const ROWS = [
+  '.......##..........##...........',
+  '......####........####..........',
+  '......################..........',
+  '.....##################.........',
+  '.....##################.........',
+  '....####################........',
+  '....####################........',
+  '....####################........',
+  '....####################........',
+  '....####################........',
+  '....####################........',
+  '....####################........',
+  '.www####################www.....',
+  '....####################........',
+  '.www####################www.....',
+  '....####################........',
+  '.....##################.........',
+  '.....##################.........',
+  '.....##################.........',
+  '.....##################.........',
+  '....####################........',
+  '....####################........',
+  '....####################........',
+  '....####################..##....',
+  '....####################.####...',
+  '....####################.#####..',
+  '....####################.#####..',
+  '....####################.#####..',
+  '....##########################..',
+  '.....########################...',
+  '......#######..###########......',
+  '........####....####............',
+];
+const W = ROWS[0].length, H = ROWS.length;
+let rects = '', grid = '';
+ROWS.forEach((r, y) => [...r].forEach((c, x) => {
+  if (c === '#') rects += `<rect x="${x}" y="${y}" width="1" height="1" fill="#D9DBDE"/>`;
+  if (c === 'w') rects += `<rect x="${x}" y="${y}" width="1" height="1" fill="#9A9DA2"/>`;
+}));
+for (let x = 0; x <= W; x++) grid += `<line x1="${x}" y1="0" x2="${x}" y2="${H}"/>`;
+for (let y = 0; y <= H; y++) grid += `<line x1="0" y1="${y}" x2="${W}" y2="${y}"/>`;
+document.getElementById('out').innerHTML =
+  `<svg viewBox="-4 -5 ${W + 8} ${H + 10}" shape-rendering="crispEdges">
+    <defs><filter id="o" x="-10%" y="-10%" width="120%" height="120%">
+      <feMorphology operator="dilate" radius="1" in="SourceAlpha" result="d"/>
+      <feFlood flood-color="#FFFFFF"/><feComposite in2="d" operator="in" result="ol"/>
+      <feMerge><feMergeNode in="ol"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+    <g filter="url(#o)">${rects}</g>
+    <g stroke="rgba(255,255,255,.12)" stroke-width=".05">${grid}</g>
+  </svg>`;
+</script>
+</body>
+</html>

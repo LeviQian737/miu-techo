@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pixel Miu</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.7.0/style.css">
+<script src="miu-pixel.js"></script>
+<style>
+:root{--paper:#F7F8F5;--grid:#DDE6E9;--ink:#2B2B33;--soft:#6B6E78;--tatami:#D8D3A6}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"LXGW WenKai Screen","PingFang SC",sans-serif}
+main{max-width:1060px;margin:0 auto;padding:32px 16px 64px}
+h1{font-size:28px;margin:0 0 4px}
+p{margin:0 0 24px;color:var(--soft);max-width:60ch}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:center;margin-bottom:36px}
+.stage{aspect-ratio:1;border:1.5px solid var(--ink);border-radius:50%;overflow:hidden;position:relative;max-width:420px;
+  background:linear-gradient(transparent 76%,var(--tatami) 76%),
+             linear-gradient(var(--grid) 1px,transparent 1px) 0 0/20px 20px,linear-gradient(90deg,var(--grid) 1px,#FBFBF7 1px) 0 0/20px 20px}
+.stage>div{position:absolute;left:12%;right:12%;top:14%;bottom:10%}
+.modes{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.modes button{font:inherit;font-size:15px;border:1.5px solid var(--ink);background:var(--paper);border-radius:999px;padding:6px 14px;cursor:pointer}
+.modes button.on{background:var(--ink);color:var(--paper)}
+.how{list-style:none;padding:0;margin:0;display:grid;gap:8px;font-size:15px}
+.how b{display:inline-block;min-width:5.5em}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px}
+.card{border:1.5px solid var(--ink);border-radius:14px;overflow:hidden;background:#FBFBF7}
+.card .pic{aspect-ratio:1;padding:14px;background:linear-gradient(var(--grid) 1px,transparent 1px) 0 0/12px 12px,linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/12px 12px}
+.card .cap{border-top:1.5px solid var(--ink);padding:8px 12px;font-size:14px}
+@media (max-width:700px){.hero{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+  <h1>Pixel Miu</h1>
+  <p>按住 Miu 来回摸会呼噜冒爱心，点一下会蹦一下，它的眼睛会跟着你的鼠标。下面的按钮切换 App 里的状态。</p>
+  <section class="hero">
+    <div class="stage"><div id="big"></div></div>
+    <div>
+      <div class="modes" id="modes">
+        <button data-m="idle" class="on">空闲</button>
+        <button data-m="focus">番茄专注</button>
+        <button data-m="break">休息</button>
+        <button data-m="worried">计划出问题</button>
+        <button data-cheer>盖章完成</button>
+      </div>
+      <ul class="how">
+        <li><b>摸摸</b>按住来回划：闭眼、呼噜、尾巴快摆、冒爱心</li>
+        <li><b>点一下</b>蹦一下，冲你眨一只眼；睡着时会睁眼看你</li>
+        <li><b>空闲</b>眨眼、眼珠自己左右瞟、偶尔甩尾巴、隔一会儿打个大哈欠；90 秒没人理会打盹</li>
+        <li><b>专注</b>绑头巾，两只爪子轮流敲键盘</li>
+        <li><b>休息</b>先打哈欠，然后摊平在坐垫上打呼</li>
+      </ul>
+    </div>
+  </section>
+  <div class="cards" id="cards"></div>
+</main>
+<script>
+const big = MiuPixel.mount(document.getElementById('big'));
+document.getElementById('modes').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  if (b.dataset.cheer !== undefined) return big.cheer();
+  document.querySelectorAll('#modes [data-m]').forEach(x => x.classList.toggle('on', x === b));
+  big.setMode(b.dataset.m);
+});
+const looks = [
+  ['空闲', {pose:'sit', face:'open'}],
+  ['被摸', {pose:'sit', face:'happy', hearts:true, purr:true}],
+  ['点一下：眨眼', {pose:'sit', face:'wink', hearts:true}],
+  ['打哈欠', {pose:'sit', face:'squint', mouth:true}],
+  ['担心', {pose:'sit', face:'worry', sweat:true}],
+  ['打盹', {pose:'sit', face:'sleep', zzz:true}],
+  ['专注', {pose:'work', face:'focus'}],
+  ['休息', {pose:'flop', face:'sleep', zzz:true}],
+];
+const cards = document.getElementById('cards');
+for (const [name, v] of looks){
+  const c = document.createElement('div'); c.className = 'card';
+  c.innerHTML = `<div class="pic"></div><div class="cap">${name}</div>`;
+  cards.appendChild(c);
+  MiuPixel.mount(c.querySelector('.pic')).show(v);
+}
+</script>
+</body>
+</html>
